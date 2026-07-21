@@ -6,7 +6,9 @@ use App\Http\Controllers\Auth\CompanyAuthController;
 use App\Http\Controllers\Company\ApplicantController;
 use App\Http\Controllers\Company\JobPostingController as CompanyJobPostingController;
 use App\Http\Controllers\Company\MatchController;
+use App\Http\Controllers\Company\MessageController as CompanyMessageController;
 use App\Http\Controllers\JobPostingController;
+use App\Http\Controllers\MessageController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Resources\UserResource;
 use Illuminate\Http\Request;
@@ -23,6 +25,8 @@ Route::middleware('auth:web')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update']);
     Route::get('/applications', [ApplicationController::class, 'index']);
     Route::post('/job-postings/{jobPosting}/applications', [ApplicationController::class, 'store']);
+    Route::get('/applications/{application}/messages', [MessageController::class, 'index']);
+    Route::post('/applications/{application}/messages', [MessageController::class, 'store']);
 });
 
 // 求人(公開)
@@ -42,5 +46,7 @@ Route::prefix('company')->group(function () {
         Route::delete('/job-postings/{jobPosting}', [CompanyJobPostingController::class, 'destroy']);
         Route::get('/job-postings/{jobPosting}/applicants', [ApplicantController::class, 'index']);
         Route::post('/applications/{application}/match', [MatchController::class, 'store']);
+        Route::get('/applications/{application}/messages', [CompanyMessageController::class, 'index']);
+        Route::post('/applications/{application}/messages', [CompanyMessageController::class, 'store']);
     });
 });
