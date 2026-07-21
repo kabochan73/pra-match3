@@ -11,6 +11,16 @@ use Illuminate\Http\Request;
 
 class ApplicationController extends Controller
 {
+    public function index(Request $request)
+    {
+        $applications = Application::where('user_id', $request->user()->id)
+            ->with(['jobPosting.company'])
+            ->latest('applied_at')
+            ->paginate(20);
+
+        return ApplicationResource::collection($applications);
+    }
+
     public function store(Request $request, JobPosting $jobPosting)
     {
         abort_if($jobPosting->status !== JobPostingStatus::Published, 404);

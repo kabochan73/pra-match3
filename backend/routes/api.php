@@ -18,6 +18,7 @@ Route::middleware('auth:web')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);
     Route::get('/user', fn (Request $request) => new UserResource($request->user()->load('skills')));
     Route::patch('/profile', [ProfileController::class, 'update']);
+    Route::get('/applications', [ApplicationController::class, 'index']);
     Route::post('/job-postings/{jobPosting}/applications', [ApplicationController::class, 'store']);
 });
 
