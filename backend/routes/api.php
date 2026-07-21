@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ApplicationController;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Auth\CompanyAuthController;
 use App\Http\Controllers\JobPostingController;
@@ -17,6 +18,7 @@ Route::middleware('auth:web')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);
     Route::get('/user', fn (Request $request) => new UserResource($request->user()->load('skills')));
     Route::patch('/profile', [ProfileController::class, 'update']);
+    Route::post('/job-postings/{jobPosting}/applications', [ApplicationController::class, 'store']);
 });
 
 // 求人(公開)
