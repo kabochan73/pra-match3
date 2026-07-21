@@ -5,6 +5,7 @@ use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Auth\CompanyAuthController;
 use App\Http\Controllers\Company\ApplicantController;
 use App\Http\Controllers\Company\JobPostingController as CompanyJobPostingController;
+use App\Http\Controllers\Company\MatchController;
 use App\Http\Controllers\JobPostingController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Resources\UserResource;
@@ -40,5 +41,6 @@ Route::prefix('company')->group(function () {
         Route::patch('/job-postings/{jobPosting}', [CompanyJobPostingController::class, 'update']);
         Route::delete('/job-postings/{jobPosting}', [CompanyJobPostingController::class, 'destroy']);
         Route::get('/job-postings/{jobPosting}/applicants', [ApplicantController::class, 'index']);
+        Route::post('/applications/{application}/match', [MatchController::class, 'store']);
     });
 });
