@@ -11,6 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
+        // job_posting_subscriptions に紐づく請求(Stripeインボイス)の履歴(1対多)。こちらも未実装機能。
         Schema::create('payments', function (Blueprint $table) {
             $table->id();
             $table->foreignId('job_posting_subscription_id')->constrained()->cascadeOnDelete();

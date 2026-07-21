@@ -11,6 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
+        // User <-> Skill の多対多の中間テーブル(User::skills() が参照)。
+        // job_posting_skills と同様、複合主キーで重複登録を防ぎ cascadeOnDelete で整合性を保つ。
+        // ProfileController::update が skill_ids を sync() する際にこのテーブルが更新される。
         Schema::create('user_skills', function (Blueprint $table) {
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
             $table->foreignId('skill_id')->constrained()->cascadeOnDelete();

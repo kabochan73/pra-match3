@@ -11,6 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
+        // 求職者プロフィール用のカラムを追加。すべて未入力を許容(nullable)し、
+        // 会員登録時ではなく後から ProfileController::update で埋めていく想定。
         Schema::table('users', function (Blueprint $table) {
             $table->string('phone_number')->nullable()->after('password');
             $table->date('birthdate')->nullable()->after('phone_number');

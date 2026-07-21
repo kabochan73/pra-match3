@@ -11,6 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
+        // 1つの面談調整(interview_schedules)に対する候補日時の複数提示(1対多)。
+        // is_selected でどの候補が実際に選ばれたかを表す想定(これも現状は未使用)。
         Schema::create('interview_schedule_slots', function (Blueprint $table) {
             $table->id();
             $table->foreignId('interview_schedule_id')->constrained()->cascadeOnDelete();

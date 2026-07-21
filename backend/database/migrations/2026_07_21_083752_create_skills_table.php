@@ -11,6 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
+        // スキルのマスタテーブル。求職者(user_skills)・求人(job_posting_skills)の
+        // 両方から多対多で参照される共通マスタなので、この単独テーブルには外部キーを持たない。
         Schema::create('skills', function (Blueprint $table) {
             $table->id();
             $table->string('name')->unique();

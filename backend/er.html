@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>ER Diagram</title>
+    <script type="module">
+        import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+        mermaid.initialize({ startOnLoad: true });
+    </script>
+</head>
+<body>
+    <pre class="mermaid">
+erDiagram
+    users {
+        bigint id
+        varchar name
+        varchar email
+        datetime email_verified_at
+        varchar password
+        varchar remember_token
+        timestamp created_at
+        timestamp updated_at
+    }
+    password_reset_tokens {
+        varchar email
+        varchar token
+        datetime created_at
+    }
+    sessions {
+        varchar id
+        bigint user_id
+        varchar ip_address
+        text user_agent
+        text payload
+        int last_activity
+    }
+    cache {
+        varchar key
+        text value
+        int expiration
+    }
+    cache_locks {
+        varchar key
+        varchar owner
+        int expiration
+    }
+    jobs {
+        bigint id
+        varchar queue
+        text payload
+        int attempts
+        int reserved_at
+        int available_at
+        int created_at
+    }
+    job_batches {
+        varchar id
+        varchar name
+        int total_jobs
+        int pending_jobs
+        int failed_jobs
+        text failed_job_ids
+        text options
+        int cancelled_at
+        int created_at
+        int finished_at
+    }
+    failed_jobs {
+        bigint id
+        varchar uuid
+        varchar connection
+        varchar queue
+        text payload
+        text exception
+        datetime failed_at
+    }
+    personal_access_tokens {
+        bigint id
+        morphs tokenable
+        text name
+        varchar token
+        text abilities
+        datetime last_used_at
+        datetime expires_at
+        timestamp created_at
+        timestamp updated_at
+    }
+    companies {
+        bigint id
+        varchar name
+        varchar email
+        datetime email_verified_at
+        varchar password
+        varchar phone_number
+        text description
+        varchar website_url
+        varchar prefecture
+        varchar stripe_customer_id
+        varchar remember_token
+        timestamp created_at
+        timestamp updated_at
+    }
+    skills {
+        bigint id
+        varchar name
+    }
+    job_postings {
+        bigint id
+        bigint company_id
+        varchar title
+        text description
+        varchar employment_type
+        varchar work_style
+        varchar position_level
+        int min_experience_years
+        varchar prefecture
+        int salary_min
+        int salary_max
+        varchar status
+        datetime published_at
+        timestamp created_at
+        timestamp updated_at
+    }
+    job_posting_skills {
+        bigint job_posting_id
+        bigint skill_id
+    }
+    user_skills {
+        bigint user_id
+        bigint skill_id
+    }
+    applications {
+        bigint id
+        bigint user_id
+        bigint job_posting_id
+        varchar status
+        datetime applied_at
+        datetime response_deadline
+        datetime company_responded_at
+        timestamp created_at
+        timestamp updated_at
+    }
+    application_status_histories {
+        bigint id
+        bigint application_id
+        varchar status
+        varchar changed_by_type
+        bigint changed_by_id
+        datetime created_at
+    }
+    messages {
+        bigint id
+        bigint application_id
+        varchar sender_type
+        bigint sender_id
+        text body
+        datetime read_at
+        datetime created_at
+    }
+    interview_schedules {
+        bigint id
+        bigint application_id
+        varchar status
+        varchar method
+        varchar location_or_url
+        datetime confirmed_starts_at
+        timestamp created_at
+        timestamp updated_at
+    }
+    interview_schedule_slots {
+        bigint id
+        bigint interview_schedule_id
+        datetime starts_at
+        datetime ends_at
+        boolean is_selected
+        datetime created_at
+    }
+    job_posting_subscriptions {
+        bigint id
+        bigint job_posting_id
+        bigint company_id
+        varchar stripe_subscription_id
+        varchar stripe_price_id
+        varchar status
+        datetime trial_ends_at
+        datetime current_period_start
+        datetime current_period_end
+        timestamp created_at
+        timestamp updated_at
+    }
+    payments {
+        bigint id
+        bigint job_posting_subscription_id
+        varchar stripe_invoice_id
+        int amount
+        varchar status
+        datetime paid_at
+        datetime created_at
+    }
+    notifications {
+        uuid id
+        varchar type
+        morphs notifiable
+        text data
+        datetime read_at
+        timestamp created_at
+        timestamp updated_at
+    }
+    users ||--o{ sessions : ""
+    job_postings ||--o{ job_posting_skills : ""
+    skills ||--o{ job_posting_skills : ""
+    users ||--o{ user_skills : ""
+    skills ||--o{ user_skills : ""
+    users ||--o{ applications : ""
+    job_postings ||--o{ applications : ""
+    applications ||--o{ application_status_histories : ""
+    applications ||--o{ messages : ""
+    applications ||--o{ interview_schedules : ""
+    interview_schedules ||--o{ interview_schedule_slots : ""
+    job_postings ||--o{ job_posting_subscriptions : ""
+    job_posting_subscriptions ||--o{ payments : ""
+
+    </pre>
+</body>
+</html>

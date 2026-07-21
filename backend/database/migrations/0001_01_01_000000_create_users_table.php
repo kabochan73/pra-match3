@@ -11,6 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
+        // 求職者(User)本体のテーブル。Laravel標準の雛形そのまま。
+        // 会社側の同等テーブルは別マイグレーション(companies)で定義され、認証ガードも users/company で分離されている。
         Schema::create('users', function (Blueprint $table) {
             $table->id();
             $table->string('name');
@@ -21,12 +23,16 @@ return new class extends Migration
             $table->timestamps();
         });
 
+        // パスワード再発行用のトークン保存テーブル。
+        // AuthController::forgotPassword / resetPassword が Password::broker('users') 経由で読み書きする。
         Schema::create('password_reset_tokens', function (Blueprint $table) {
             $table->string('email')->primary();
             $table->string('token');
             $table->timestamp('created_at')->nullable();
         });
 
+        // セッションドライバ用のテーブル(セッションをDBに保存する設定のとき使用)。
+        // user_id はこの後 companies が作られる時点では users 参照だが、企業ログインもこの同じ sessions テーブルを共有する。
         Schema::create('sessions', function (Blueprint $table) {
             $table->string('id')->primary();
             $table->foreignId('user_id')->nullable()->index();

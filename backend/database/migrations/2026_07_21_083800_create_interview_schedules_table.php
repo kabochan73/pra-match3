@@ -11,9 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
+        // 面談調整機能用のテーブル。マイグレーション/モデル(InterviewSchedule)は存在するが、
+        // 対応するControllerがまだ無く、API経由では未使用(今後実装予定と思われる)。
+        // application_id が unique なので1応募につき面談スケジュールは1件のみ(1対1)。
         Schema::create('interview_schedules', function (Blueprint $table) {
             $table->id();
             $table->foreignId('application_id')->unique()->constrained()->cascadeOnDelete();
+            // proposed(候補日提示) -> confirmed(確定) / cancelled(中止) という想定の遷移。
             $table->string('status')->default('proposed');
             $table->string('method')->nullable();
             $table->string('location_or_url')->nullable();

@@ -11,6 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
+        // Laravel Sanctum の個人アクセストークン用テーブル。User/Company モデルは HasApiTokens
+        // トレイトを使っているため発行自体は可能だが、実際の認証は bootstrap/app.php の
+        // statefulApi() によるSPA向けセッション認証(auth:web/auth:company)で行っており、
+        // ->createToken() でのトークン発行は現状どこからも呼ばれていない(未使用)。
         Schema::create('personal_access_tokens', function (Blueprint $table) {
             $table->id();
             $table->morphs('tokenable');
