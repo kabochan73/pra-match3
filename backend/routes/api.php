@@ -3,6 +3,7 @@
 use App\Http\Controllers\ApplicationController;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Auth\CompanyAuthController;
+use App\Http\Controllers\Company\ApplicantController;
 use App\Http\Controllers\Company\JobPostingController as CompanyJobPostingController;
 use App\Http\Controllers\JobPostingController;
 use App\Http\Controllers\ProfileController;
@@ -38,5 +39,6 @@ Route::prefix('company')->group(function () {
         Route::post('/job-postings', [CompanyJobPostingController::class, 'store']);
         Route::patch('/job-postings/{jobPosting}', [CompanyJobPostingController::class, 'update']);
         Route::delete('/job-postings/{jobPosting}', [CompanyJobPostingController::class, 'destroy']);
+        Route::get('/job-postings/{jobPosting}/applicants', [ApplicantController::class, 'index']);
     });
 });
