@@ -3,6 +3,7 @@
 use App\Http\Controllers\ApplicationController;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Auth\CompanyAuthController;
+use App\Http\Controllers\Company\JobPostingController as CompanyJobPostingController;
 use App\Http\Controllers\JobPostingController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Resources\UserResource;
@@ -33,5 +34,9 @@ Route::prefix('company')->group(function () {
     Route::middleware('auth:company')->group(function () {
         Route::post('/logout', [CompanyAuthController::class, 'logout']);
         Route::get('/user', fn (Request $request) => $request->user('company'));
+        Route::get('/job-postings', [CompanyJobPostingController::class, 'index']);
+        Route::post('/job-postings', [CompanyJobPostingController::class, 'store']);
+        Route::patch('/job-postings/{jobPosting}', [CompanyJobPostingController::class, 'update']);
+        Route::delete('/job-postings/{jobPosting}', [CompanyJobPostingController::class, 'destroy']);
     });
 });
