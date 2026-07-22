@@ -15,6 +15,7 @@ export function Header() {
           Match Portfolio
         </Link>
         <nav className="flex items-center gap-4 text-sm">
+          <Link href="/jobs">求人を探す</Link>
           {isLoading ? null : user ? (
             <>
               <Link href="/seeker/mypage">マイページ</Link>
