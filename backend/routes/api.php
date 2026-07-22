@@ -11,6 +11,7 @@ use App\Http\Controllers\Company\ProfileController as CompanyProfileController;
 use App\Http\Controllers\JobPostingController;
 use App\Http\Controllers\MessageController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\SkillController;
 use App\Http\Resources\CompanyResource;
 use App\Http\Resources\UserResource;
 use Illuminate\Http\Request;
@@ -34,6 +35,9 @@ Route::middleware('auth:web')->group(function () {
 // 求人(公開)
 Route::get('/job-postings', [JobPostingController::class, 'index']);
 Route::get('/job-postings/{jobPosting}', [JobPostingController::class, 'show']);
+
+// スキル(公開マスタデータ。求職者プロフィールと求人投稿の両方で選択肢として使う)
+Route::get('/skills', [SkillController::class, 'index']);
 
 // 企業
 Route::prefix('company')->group(function () {

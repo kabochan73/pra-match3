@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/lib/auth-context";
 
@@ -35,15 +36,23 @@ export default function MyPage() {
           <dd>{user.email}</dd>
         </div>
       </dl>
-      <button
-        type="button"
-        onClick={() => {
-          void logoutUser().then(() => router.push("/"));
-        }}
-        className="mt-8 rounded-md border border-zinc-300 px-4 py-2 text-sm dark:border-zinc-700"
-      >
-        ログアウト
-      </button>
+      <div className="mt-8 flex gap-3">
+        <Link
+          href="/seeker/profile"
+          className="rounded-md bg-zinc-900 px-4 py-2 text-sm font-medium text-white dark:bg-zinc-100 dark:text-zinc-900"
+        >
+          プロフィールを編集する
+        </Link>
+        <button
+          type="button"
+          onClick={() => {
+            void logoutUser().then(() => router.push("/"));
+          }}
+          className="rounded-md border border-zinc-300 px-4 py-2 text-sm dark:border-zinc-700"
+        >
+          ログアウト
+        </button>
+      </div>
     </div>
   );
 }

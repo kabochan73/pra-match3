@@ -26,6 +26,14 @@ export interface Company {
   created_at: string;
 }
 
+export type ProfileUpdateInput = {
+  name?: string;
+  phone_number?: string | null;
+  birthdate?: string | null;
+  bio?: string | null;
+  skill_ids?: number[];
+};
+
 const userQueryKey = ["auth", "user"] as const;
 const companyQueryKey = ["auth", "company"] as const;
 
@@ -63,6 +71,7 @@ interface AuthContextValue {
   loginUser: (email: string, password: string) => Promise<void>;
   registerUser: (name: string, email: string, password: string) => Promise<void>;
   logoutUser: () => Promise<void>;
+  updateProfile: (input: ProfileUpdateInput) => Promise<void>;
   loginCompany: (email: string, password: string) => Promise<void>;
   registerCompany: (name: string, email: string, password: string) => Promise<void>;
   logoutCompany: () => Promise<void>;
@@ -96,6 +105,16 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     mutationFn: () => apiFetch("/api/logout", { method: "POST" }),
     onSuccess: () => {
       queryClient.setQueryData(userQueryKey, null);
+    },
+  });
+
+  const updateProfileMutation = useMutation({
+    mutationFn: (input: ProfileUpdateInput) =>
+      apiFetch<{ data: JobSeeker }>("/api/profile", { method: "PATCH", body: input }).then(
+        (response) => response.data,
+      ),
+    onSuccess: (updatedUser) => {
+      queryClient.setQueryData(userQueryKey, updatedUser);
     },
   });
 
@@ -140,6 +159,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     await logoutUserMutation.mutateAsync();
   }, [logoutUserMutation]);
 
+  const updateProfile = useCallback(
+    async (input: ProfileUpdateInput) => {
+      await updateProfileMutation.mutateAsync(input);
+    },
+    [updateProfileMutation],
+  );
+
   const loginCompany = useCallback(
     async (email: string, password: string) => {
       await loginCompanyMutation.mutateAsync({ email, password });
@@ -167,6 +193,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         loginUser,
         registerUser,
         logoutUser,
+        updateProfile,
         loginCompany,
         registerCompany,
         logoutCompany,
