@@ -1,5 +1,16 @@
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8000";
 
+// Shape of a Laravel API Resource collection built from a paginate() query.
+export interface Paginated<T> {
+  data: T[];
+  meta: {
+    current_page: number;
+    last_page: number;
+    per_page: number;
+    total: number;
+  };
+}
+
 export class ApiError extends Error {
   readonly status: number;
   readonly errors?: Record<string, string[]>;

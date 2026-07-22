@@ -1,5 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { apiFetch } from "./api";
+import { apiFetch, type Paginated } from "./api";
 
 export type EmploymentType = "full_time" | "part_time" | "contract";
 export type WorkStyle = "remote" | "onsite" | "hybrid";
@@ -38,16 +38,6 @@ export interface JobPosting {
   published_at: string | null;
   company?: { id: number; name: string; prefecture: string | null };
   skills?: { id: number; name: string }[];
-}
-
-export interface Paginated<T> {
-  data: T[];
-  meta: {
-    current_page: number;
-    last_page: number;
-    per_page: number;
-    total: number;
-  };
 }
 
 export interface JobSearchFilters {

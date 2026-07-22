@@ -18,6 +18,7 @@ export function Header() {
           <Link href="/jobs">求人を探す</Link>
           {isLoading ? null : user ? (
             <>
+              <Link href="/seeker/applications">応募状況</Link>
               <Link href="/seeker/mypage">マイページ</Link>
               <span className="text-zinc-500">{user.name} さん</span>
               <button
