@@ -49,6 +49,7 @@ Route::prefix('company')->group(function () {
         Route::patch('/profile', [CompanyProfileController::class, 'update']);
         Route::get('/job-postings', [CompanyJobPostingController::class, 'index']);
         Route::post('/job-postings', [CompanyJobPostingController::class, 'store']);
+        Route::get('/job-postings/{jobPosting}', [CompanyJobPostingController::class, 'show']);
         Route::patch('/job-postings/{jobPosting}', [CompanyJobPostingController::class, 'update']);
         Route::delete('/job-postings/{jobPosting}', [CompanyJobPostingController::class, 'destroy']);
         Route::get('/job-postings/{jobPosting}/applicants', [ApplicantController::class, 'index']);

@@ -33,6 +33,7 @@ export function Header() {
             </>
           ) : company ? (
             <>
+              <Link href="/company/job-postings">求人管理</Link>
               <Link href="/company/mypage">マイページ</Link>
               <span className="text-zinc-500">{company.name} さん</span>
               <button

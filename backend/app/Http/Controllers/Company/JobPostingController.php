@@ -24,6 +24,13 @@ class JobPostingController extends Controller
         return JobPostingResource::collection($jobPostings);
     }
 
+    public function show(Request $request, JobPosting $jobPosting)
+    {
+        abort_if($jobPosting->company_id !== $request->user('company')->id, 403);
+
+        return new JobPostingResource($jobPosting->load(['company', 'skills']));
+    }
+
     public function store(Request $request)
     {
         $validated = $request->validate($this->rules(sometimes: false));
