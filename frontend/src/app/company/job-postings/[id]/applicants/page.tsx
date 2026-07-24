@@ -115,6 +115,14 @@ export default function ApplicantsPage() {
                 気になるを送る(マッチ成立)
               </button>
             )}
+            {applicant.status !== "applied" && applicant.status !== "expired" && (
+              <Link
+                href={`/company/applications/${applicant.id}/messages`}
+                className="mt-4 inline-block text-sm underline"
+              >
+                メッセージ
+              </Link>
+            )}
           </div>
         ))}
       </div>

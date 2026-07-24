@@ -51,29 +51,38 @@ export default function ApplicationsPage() {
           </p>
         )}
         {data?.data.map((application) => (
-          <Link
+          <div
             key={application.id}
-            href={`/jobs/${application.job_posting.id}`}
-            className="rounded-lg border border-zinc-200 p-5 transition-colors hover:border-zinc-400 dark:border-zinc-800 dark:hover:border-zinc-600"
+            className="rounded-lg border border-zinc-200 p-5 dark:border-zinc-800"
           >
-            <div className="flex items-start justify-between gap-4">
-              <div>
-                <p className="text-xs text-zinc-500">{application.job_posting.company.name}</p>
-                <h2 className="mt-1 text-base font-semibold">{application.job_posting.title}</h2>
+            <Link href={`/jobs/${application.job_posting.id}`} className="block">
+              <div className="flex items-start justify-between gap-4">
+                <div>
+                  <p className="text-xs text-zinc-500">{application.job_posting.company.name}</p>
+                  <h2 className="mt-1 text-base font-semibold">{application.job_posting.title}</h2>
+                </div>
+                <span
+                  className={`shrink-0 rounded-full px-3 py-1 text-xs font-medium ${APPLICATION_STATUS_STYLES[application.status]}`}
+                >
+                  {APPLICATION_STATUS_LABELS[application.status]}
+                </span>
               </div>
-              <span
-                className={`shrink-0 rounded-full px-3 py-1 text-xs font-medium ${APPLICATION_STATUS_STYLES[application.status]}`}
+              <div className="mt-3 flex flex-wrap gap-4 text-xs text-zinc-500">
+                <span>応募日: {formatDate(application.applied_at)}</span>
+                {application.status === "applied" && application.response_deadline && (
+                  <span>回答期限: {formatDate(application.response_deadline)}</span>
+                )}
+              </div>
+            </Link>
+            {application.status !== "applied" && application.status !== "expired" && (
+              <Link
+                href={`/seeker/applications/${application.id}/messages`}
+                className="mt-3 inline-block text-sm underline"
               >
-                {APPLICATION_STATUS_LABELS[application.status]}
-              </span>
-            </div>
-            <div className="mt-3 flex flex-wrap gap-4 text-xs text-zinc-500">
-              <span>応募日: {formatDate(application.applied_at)}</span>
-              {application.status === "applied" && application.response_deadline && (
-                <span>回答期限: {formatDate(application.response_deadline)}</span>
-              )}
-            </div>
-          </Link>
+                メッセージ
+              </Link>
+            )}
+          </div>
         ))}
       </div>
 
