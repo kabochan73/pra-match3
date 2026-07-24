@@ -34,6 +34,14 @@ export type ProfileUpdateInput = {
   skill_ids?: number[];
 };
 
+export type CompanyProfileUpdateInput = {
+  name?: string;
+  phone_number?: string | null;
+  description?: string | null;
+  website_url?: string | null;
+  prefecture?: string | null;
+};
+
 const userQueryKey = ["auth", "user"] as const;
 const companyQueryKey = ["auth", "company"] as const;
 
@@ -75,6 +83,7 @@ interface AuthContextValue {
   loginCompany: (email: string, password: string) => Promise<void>;
   registerCompany: (name: string, email: string, password: string) => Promise<void>;
   logoutCompany: () => Promise<void>;
+  updateCompanyProfile: (input: CompanyProfileUpdateInput) => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextValue | null>(null);
@@ -141,6 +150,16 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     },
   });
 
+  const updateCompanyProfileMutation = useMutation({
+    mutationFn: (input: CompanyProfileUpdateInput) =>
+      apiFetch<{ data: Company }>("/api/company/profile", { method: "PATCH", body: input }).then(
+        (response) => response.data,
+      ),
+    onSuccess: (updatedCompany) => {
+      queryClient.setQueryData(companyQueryKey, updatedCompany);
+    },
+  });
+
   const loginUser = useCallback(
     async (email: string, password: string) => {
       await loginUserMutation.mutateAsync({ email, password });
@@ -184,6 +203,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     await logoutCompanyMutation.mutateAsync();
   }, [logoutCompanyMutation]);
 
+  const updateCompanyProfile = useCallback(
+    async (input: CompanyProfileUpdateInput) => {
+      await updateCompanyProfileMutation.mutateAsync(input);
+    },
+    [updateCompanyProfileMutation],
+  );
+
   return (
     <AuthContext.Provider
       value={{
@@ -197,6 +223,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         loginCompany,
         registerCompany,
         logoutCompany,
+        updateCompanyProfile,
       }}
     >
       {children}

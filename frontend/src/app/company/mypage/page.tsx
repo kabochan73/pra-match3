@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/lib/auth-context";
 
@@ -34,16 +35,41 @@ export default function CompanyMyPage() {
           <dt className="w-24 shrink-0 text-zinc-500">メール</dt>
           <dd>{company.email}</dd>
         </div>
+        <div className="flex gap-2">
+          <dt className="w-24 shrink-0 text-zinc-500">電話番号</dt>
+          <dd>{company.phone_number ?? "未設定"}</dd>
+        </div>
+        <div className="flex gap-2">
+          <dt className="w-24 shrink-0 text-zinc-500">所在地</dt>
+          <dd>{company.prefecture ?? "未設定"}</dd>
+        </div>
+        <div className="flex gap-2">
+          <dt className="w-24 shrink-0 text-zinc-500">Webサイト</dt>
+          <dd>{company.website_url ?? "未設定"}</dd>
+        </div>
+        <div className="flex gap-2">
+          <dt className="w-24 shrink-0 text-zinc-500">紹介文</dt>
+          <dd className="whitespace-pre-wrap">{company.description ?? "未設定"}</dd>
+        </div>
       </dl>
-      <button
-        type="button"
-        onClick={() => {
-          void logoutCompany().then(() => router.push("/"));
-        }}
-        className="mt-8 rounded-md border border-zinc-300 px-4 py-2 text-sm dark:border-zinc-700"
-      >
-        ログアウト
-      </button>
+
+      <div className="mt-8 flex gap-3">
+        <Link
+          href="/company/profile"
+          className="rounded-md bg-zinc-900 px-4 py-2 text-sm font-medium text-white dark:bg-zinc-100 dark:text-zinc-900"
+        >
+          プロフィールを編集
+        </Link>
+        <button
+          type="button"
+          onClick={() => {
+            void logoutCompany().then(() => router.push("/"));
+          }}
+          className="rounded-md border border-zinc-300 px-4 py-2 text-sm dark:border-zinc-700"
+        >
+          ログアウト
+        </button>
+      </div>
     </div>
   );
 }
