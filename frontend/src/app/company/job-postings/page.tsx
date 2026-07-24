@@ -90,6 +90,9 @@ export default function CompanyJobPostingsPage() {
               {jobPosting.prefecture && ` ・ ${jobPosting.prefecture}`}
             </p>
             <div className="mt-4 flex gap-3 text-sm">
+              <Link href={`/company/job-postings/${jobPosting.id}/applicants`} className="underline">
+                応募者一覧
+              </Link>
               <Link href={`/company/job-postings/${jobPosting.id}/edit`} className="underline">
                 編集
               </Link>
